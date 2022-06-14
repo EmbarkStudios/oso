@@ -17,7 +17,7 @@ pub static NEXT_ID: AtomicU64 = AtomicU64::new(0);
 macro_rules! value {
     ([$($args:expr),*]) => {
         $crate::terms::Value::List(vec![
-            $(term!(value!($args))),*
+            $($crate::macros::term!($crate::macros::value!($args))),*
         ])
     };
     ($arg:expr) => {
@@ -28,17 +28,17 @@ macro_rules! value {
 #[macro_export]
 macro_rules! values {
     ($([$($args:expr),*]),*) => {
-        vec![$(values!($($args),*)),*]
+        vec![$($crate::macros::values!($($args),*)),*]
     };
     ($($args:expr),*) => {
-        vec![$(value!($args)),*]
+        vec![$($crate::macros::value!($args)),*]
     };
 }
 
 #[macro_export]
 macro_rules! term {
     ($($expr:tt)*) => {
-        $crate::macros::TestHelper::<Term>::from(value!($($expr)*)).0
+        $crate::macros::TestHelper::<Term>::from($crate::macros::value!($($expr)*)).0
     };
 }
 
@@ -60,13 +60,13 @@ macro_rules! param {
 macro_rules! instance {
     ($instance:expr) => {
         InstanceLiteral {
-            tag: sym!($instance),
+            tag: $crate::macros::sym!($instance),
             fields: Dictionary::new(),
         }
     };
     ($tag:expr, $fields:expr) => {
         InstanceLiteral {
-            tag: sym!($tag),
+            tag: $crate::macros::sym!($tag),
             fields: $crate::macros::TestHelper::<Dictionary>::from($fields).0,
         }
     };
@@ -83,7 +83,7 @@ macro_rules! sym {
 macro_rules! var {
     ($arg:expr) => {
         $crate::macros::TestHelper::<Term>::from(
-            $crate::macros::TestHelper::<Value>::from(sym!($arg)).0,
+            $crate::macros::TestHelper::<Value>::from($crate::macros::sym!($arg)).0,
         )
         .0
     };
@@ -99,7 +99,7 @@ macro_rules! string {
 #[macro_export]
 macro_rules! str {
     ($arg:expr) => {
-        $crate::macros::TestHelper::<Term>::from(string!($arg)).0
+        $crate::macros::TestHelper::<Term>::from($crate::macros::string!($arg)).0
     };
 }
 
@@ -108,14 +108,14 @@ macro_rules! str {
 macro_rules! call {
     ($name:expr) => {
         Call {
-            name: sym!($name),
+            name: $crate::macros::sym!($name),
             args: vec![],
             kwargs: None
         }
     };
     ($name:expr, [$($args:expr),*]) => {
         Call {
-            name: sym!($name),
+            name: $crate::macros::sym!($name),
             args: vec![
                 $(term!($args)),*
             ],
@@ -124,9 +124,9 @@ macro_rules! call {
     };
     ($name:expr, [$($args:expr),*], $fields:expr) => {
         Call {
-            name: sym!($name),
+            name: $crate::macros::sym!($name),
             args: vec![
-                $(term!($args)),*
+                $($crate::macros::term!($args)),*
             ],
             kwargs: Some($fields)
         }
@@ -168,12 +168,12 @@ macro_rules! args {
     // this is gross: maybe match a <comma plus trailing tokens>
     ($name:expr $(, $($tt:tt)*)?) => {{
         let mut v = args!($($($tt)*)?);
-        v.push(param!(value!($name)));
+        v.push($crate::macros::param!($crate::macros::value!($name)));
         v
     }};
     ($name:expr ; $spec:expr $(, $($tt:tt)*)?) => {{
-        let mut v = args!($($($tt)*)?);
-        v.push(param!((sym!($name), term!($spec))));
+        let mut v = $crate::macros::args!($($($tt)*)?);
+        v.push($crate::macros::param!(($crate::macros::sym!($name), $crate::macros::term!($spec))));
         v
     }};
 }
@@ -181,23 +181,23 @@ macro_rules! args {
 #[macro_export]
 macro_rules! rule {
     ($name:expr, [$($args:tt)*] => $($body:expr),+) => {{
-        let mut params = args!($($args)*);
+        let mut params = $crate::macros::args!($($args)*);
         params.reverse();
         Rule {
-            name: sym!($name),
+            name: $crate::macros::sym!($name),
             params,
-            body: term!(op!(And, $(term!($body)),+)),
+            body: $crate::macros::term!(op!(And, $($crate::macros::term!($body)),+)),
             source_info: $crate::sources::SourceInfo::Test,
             required: false,
         }}
     };
     ($name:expr, [$($args:tt)*]) => {{
-        let mut params = args!($($args)*);
+        let mut params = $crate::macros::args!($($args)*);
         params.reverse();
         Rule {
-            name: sym!($name),
+            name: $crate::macros::sym!($name),
             params,
-            body: term!(op!(And)),
+            body: $crate::macros::term!($crate::macros::op!(And)),
             source_info: $crate::sources::SourceInfo::Test,
             required: false,
         }
@@ -205,12 +205,12 @@ macro_rules! rule {
     // this macro variant is used exclusively to create rule *types*
     // TODO: @patrickod break into specific-purpose rule_type! macro and RuleType struct
     ($name:expr, [$($args:tt)*], $required:expr) => {{
-        let mut params = args!($($args)*);
+        let mut params = $crate::macros::args!($($args)*);
         params.reverse();
         Rule {
-            name: sym!($name),
+            name: $crate::macros::sym!($name),
             params,
-            body: term!(op!(And)),
+            body: $crate::macros::term!($crate::macros::op!(And)),
             source_info: $crate::sources::SourceInfo::Test,
             required: $required,
         }
