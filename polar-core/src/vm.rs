@@ -425,7 +425,7 @@ impl PolarVirtualMachine {
         self.stack_limit = limit;
     }
 
-    fn kb(&self) -> RwLockReadGuard<KnowledgeBase> {
+    fn kb(&self) -> RwLockReadGuard<'_, KnowledgeBase> {
         self.kb.read().unwrap()
     }
 

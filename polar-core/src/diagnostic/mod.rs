@@ -62,7 +62,7 @@ impl Diagnostic {
 }
 
 impl fmt::Display for Diagnostic {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             Diagnostic::Error(e) => write!(f, "{}", e)?,
             Diagnostic::Warning(w) => write!(f, "{}", w)?,

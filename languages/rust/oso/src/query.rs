@@ -328,7 +328,7 @@ This may mean you performed an operation in your policy over an unbound variable
 }
 
 impl std::fmt::Debug for ResultSet {
-    fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(fmt, "{:#?}", self.bindings)
     }
 }

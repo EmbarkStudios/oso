@@ -318,19 +318,19 @@ mod display {
     }
 
     impl fmt::Display for Rule {
-        fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(fmt, "{}", self.to_polar())
         }
     }
 
     impl fmt::Display for Parameter {
-        fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(fmt, "{}", self.to_polar())
         }
     }
 
     impl fmt::Display for Numeric {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
                 Self::Integer(i) => write!(f, "{}", i),
                 Self::Float(float) => write!(f, "{}", float),
@@ -339,7 +339,7 @@ mod display {
     }
 
     impl fmt::Display for Declaration {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
                 Self::Role => write!(f, "role"),
                 Self::Permission => write!(f, "permission"),
@@ -349,7 +349,7 @@ mod display {
     }
 
     impl fmt::Display for LogLevel {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
                 Self::Trace => write!(f, "trace"),
                 Self::Debug => write!(f, "debug"),
@@ -359,13 +359,13 @@ mod display {
     }
 
     impl fmt::Display for InstanceLiteral {
-        fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(fmt, "{}", self.to_polar())
         }
     }
 
     impl fmt::Display for Dictionary {
-        fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(fmt, "{}", self.to_polar())
         }
     }

@@ -1,7 +1,7 @@
 use criterion::{criterion_group, BenchmarkId, Criterion};
 
 use polar_core::*;
-use polar_core::{kb::Bindings, polar::Polar, terms::*};
+use polar_core::{kb::Bindings, polar::Polar};
 
 use super::runner::{runner_from_query, Runner};
 

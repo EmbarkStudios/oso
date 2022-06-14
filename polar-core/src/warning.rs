@@ -27,7 +27,7 @@ impl PolarWarning {
 }
 
 impl fmt::Display for PolarWarning {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.0)?;
         if let Some(context) = self.get_context() {
             write!(f, "{}", context)?;
@@ -126,7 +126,7 @@ fn common_specializer_misspellings(term: &Term) -> Option<&str> {
 }
 
 impl fmt::Display for ValidationWarning {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use ValidationWarning::*;
 
         match self {

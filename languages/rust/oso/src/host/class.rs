@@ -337,7 +337,7 @@ pub struct Instance {
 }
 
 impl fmt::Debug for Instance {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Instance<{}>", self.debug_type_name)
     }
 }

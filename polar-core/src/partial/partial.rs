@@ -300,7 +300,7 @@ mod test {
     use crate::events::QueryEvent;
     use crate::polar::Polar;
     use crate::query::Query;
-    use crate::terms::{Call, Dictionary, InstanceLiteral, Pattern};
+    use crate::terms::Dictionary;
 
     macro_rules! assert_partial_expression {
         ($bindings:expr, $sym:expr, $right:expr) => {

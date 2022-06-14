@@ -6,7 +6,7 @@ use std::collections::{HashMap, HashSet};
 use crate::{
     error::{PolarResult, RuntimeError},
     folder::{fold_list, fold_term, Folder},
-    terms::{has_rest_var, Operation, Operator, Symbol, Term, Value},
+    terms::{has_rest_var, Operation, Symbol, Term, Value},
     vm::Goal,
 };
 
@@ -102,7 +102,7 @@ fn cycle_constraints(cycle: Vec<Symbol>) -> Operation {
 }
 
 impl From<BindingManagerVariableState<'_>> for VariableState {
-    fn from(other: BindingManagerVariableState) -> Self {
+    fn from(other: BindingManagerVariableState<'_>) -> Self {
         use BindingManagerVariableState::*;
         // We represent Cycles as a Partial VariableState. This information is not
         // needed in the VM, so unbound could be an acceptable representation as well.
@@ -565,7 +565,7 @@ impl BindingManager {
             .map(|Binding(_, val)| val)
     }
 
-    fn _variable_state(&self, variable: &Symbol) -> BindingManagerVariableState {
+    fn _variable_state(&self, variable: &Symbol) -> BindingManagerVariableState<'_> {
         self._variable_state_at_point(variable, &self.bsp())
     }
 
@@ -574,7 +574,7 @@ impl BindingManager {
         &self,
         variable: &Symbol,
         bsp: &Bsp,
-    ) -> BindingManagerVariableState {
+    ) -> BindingManagerVariableState<'_> {
         use BindingManagerVariableState::*;
         let index = bsp.bindings_index;
         let mut path = vec![variable];

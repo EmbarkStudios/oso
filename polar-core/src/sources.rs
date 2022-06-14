@@ -15,7 +15,7 @@ pub struct Context {
 }
 
 impl fmt::Display for Context {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.source_position())?;
         let lines = source_lines(&self.source, self.left, 0).replace('\n', "\n\t");
         writeln!(f, ":\n\t{}", lines)?;

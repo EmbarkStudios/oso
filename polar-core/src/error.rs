@@ -22,7 +22,7 @@ pub enum ErrorKind {
 }
 
 impl fmt::Display for ErrorKind {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Parse(e) => write!(f, "{}", e),
             Self::Runtime(e) => write!(f, "{}", e),
@@ -44,7 +44,7 @@ pub struct PolarError(pub ErrorKind);
 impl std::error::Error for PolarError {}
 
 impl fmt::Display for PolarError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.0)?;
         if let Some(context) = self.get_context() {
             write!(f, "{}", context)?;
@@ -218,7 +218,7 @@ impl fmt::Debug for ParseError {
 }
 
 impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.kind)
     }
 }
@@ -275,7 +275,7 @@ pub enum ParseErrorKind {
 }
 
 impl fmt::Display for ParseErrorKind {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::IntegerOverflow { token, .. } => {
                 write!(f, "'{}' caused an integer overflow", token.escape_debug())
@@ -386,7 +386,7 @@ impl From<RuntimeError> for PolarError {
 }
 
 impl fmt::Display for RuntimeError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::ArithmeticError { term } => write!(f, "Arithmetic error: {}", term),
             Self::Unsupported { msg, .. } => write!(f, "Not supported: {}", msg),
@@ -498,7 +498,7 @@ impl From<OperationalError> for PolarError {
 }
 
 impl fmt::Display for OperationalError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::InvalidState { msg } => write!(f, "Invalid state: {}", msg),
             Self::Serialization { msg } => write!(f, "Serialization error: {}", msg),
@@ -577,7 +577,7 @@ impl From<ValidationError> for PolarError {
 }
 
 impl fmt::Display for ValidationError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::FileLoading { msg, .. } => write!(f, "Problem loading file: {}", msg),
             Self::InvalidRule { rule, msg } => {

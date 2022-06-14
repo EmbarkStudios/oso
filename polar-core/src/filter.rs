@@ -498,7 +498,7 @@ impl FilterInfo {
 }
 
 impl Display for Filter {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
         writeln!(f, "query {}", self.root)?;
         if !self.relations.is_empty() {
             writeln!(f, "join")?;
@@ -519,7 +519,7 @@ impl Display for Filter {
 
         return Ok(());
 
-        fn fmt_disj(disj: &Set<Condition>, f: &mut Formatter) -> Result<(), fmt::Error> {
+        fn fmt_disj(disj: &Set<Condition>, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
             let mut conjs = disj.iter();
             match conjs.next() {
                 None => {}
@@ -536,7 +536,7 @@ impl Display for Filter {
 }
 
 impl Display for Comparison {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
         use Comparison::*;
         write!(
             f,
@@ -556,7 +556,7 @@ impl Display for Comparison {
 }
 
 impl Display for Datum {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
         use Datum::*;
         match self {
             Immediate(val) => write!(f, "{}", val),
@@ -567,14 +567,14 @@ impl Display for Datum {
 }
 
 impl Display for Condition {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
         let Condition(l, op, r) = self;
         write!(f, "{} {} {}", l, op, r)
     }
 }
 
 impl Display for Relation {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
         let Relation(src, nom, dest) = self;
         write!(f, "{}.{} -> {}", src, nom, dest)
     }

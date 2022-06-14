@@ -45,7 +45,7 @@ where
     impl<'de> de::Visitor<'de> for FloatVisitor {
         type Value = f64;
 
-        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        fn expecting(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
             formatter.write_str("An integer (42), a float (1.2), or a string (\"NaN\")")
         }
 
