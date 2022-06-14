@@ -33,9 +33,11 @@ type Set<A> = HashSet<A>;
 /// the record passes through the filter.
 #[derive(Clone, Eq, Debug, Serialize, PartialEq)]
 pub struct Filter {
-    root: TypeName,                  // the host already has this, so we could leave it off
-    relations: Vec<Relation>,        // this & root determine the "joins" (or whatever)
-    conditions: Vec<Set<Condition>>, // disjunctive normal form
+    pub root: TypeName, // the host already has this, so we could leave it off
+    /// this & root determine the "joins" (or whatever)
+    pub relations: Vec<Relation>,
+    /// disjunctive normal form
+    pub conditions: Vec<Set<Condition>>,
 }
 
 /// A named logical extension of a data set. Corresponds to a "join" in relational
